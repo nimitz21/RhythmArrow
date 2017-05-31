@@ -9,7 +9,7 @@
 				<Node>
 					<Position>
 						<Absis>500</Absis>
-						<Ordinate>300</Ordinate>
+						<Ordinate>500</Ordinate>
 					</Position>
 				</Node>
 				<Node> 
@@ -37,6 +37,17 @@
 					</Position>
 				</Node>
 			</Nodes>
+			<Keys>
+				<Key>
+					<SpawnTime>2</SpawnTime>
+				</Key>
+				<Key>
+					<SpawnTime>3</SpawnTime>
+				</Key>
+				<Key>
+					<SpawnTime>3.5</SpawnTime>
+				</Key>
+			</Keys>
 		</Arrow>		
 		<Arrow>
 			<SpawnTime>2</SpawnTime>
@@ -44,7 +55,7 @@
 				<Node>
 					<Position>
 						<Absis>500</Absis>
-						<Ordinate>500</Ordinate>
+						<Ordinate>900</Ordinate>
 					</Position>
 				</Node>
 				<Node>
@@ -56,8 +67,8 @@
 				<Node>
 					<Position>
 						<Absis>500</Absis>
-						<Ordinate>500</Ordinate>
-					</Position>
+						<Ordinate>900</Ordinate>
+				</Position>
 				</Node>
 				<Node>
 					<Position>
@@ -68,7 +79,7 @@
 				<Node>
 					<Position>
 						<Absis>500</Absis>
-						<Ordinate>500</Ordinate>
+						<Ordinate>900</Ordinate>
 					</Position>
 				</Node>
 				<Node>

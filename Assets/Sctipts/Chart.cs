@@ -12,10 +12,10 @@ public class Chart
 
 	[XmlArray("Arrows")]
 	[XmlArrayItem("Arrow")]
-	public List<Arrow> Arrows = new List<Arrow>();
+	public List<Arrow> Arrows = new List <Arrow> ();
 
 	public static Chart Load(string path) {
-		var serializer = new XmlSerializer (typeof(Chart));
+		var serializer = new XmlSerializer (typeof (Chart));
 		using (var stream = new FileStream (path, FileMode.Open)) {
 			return serializer.Deserialize (stream) as Chart;
 		}

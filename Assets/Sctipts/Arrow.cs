@@ -7,6 +7,10 @@ public class Arrow
 
 	[XmlArray("Nodes")]
 	[XmlArrayItem("Node")]
-	public List<Node> Nodes = new List<Node>();
+	public List<Node> Nodes = new List <Node> ();
+
+	[XmlArray("Keys")]
+	[XmlArrayItem("Key")]
+	public List<Key> Keys = new List <Key> ();
 }
 

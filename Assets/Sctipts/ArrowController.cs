@@ -10,6 +10,17 @@ public class ArrowController : MonoBehaviour {
 	private int nodeCounter;
 	private LineRenderer lineRenderer;
 	private float guideLineLength;
+	private int keyCounter;
+	private float traveledDistance;
+
+	private void spawnKeys () {
+		while (keyCounter < arrow.Keys.Count - 1 && arrow.Keys [keyCounter].SpawnTime <= Time.time + guideLineLength / velocity) {
+			int keySpawnNodeCounter = 0;
+			if (Vector3.Distance (transform.position, arrow.Nodes [keySpawnNodeCounter].Position.vector3 ()) > (arrow.Keys [keyCounter].SpawnTime - Time.time) * velocity) {
+				
+			}
+		}
+	}
 
 	private void drawGuideLine () {
 		lineRenderer.positionCount = 1;
@@ -17,7 +28,7 @@ public class ArrowController : MonoBehaviour {
 		int guideLineNodeCounter = nodeCounter;
 		float currentGuideLineLength = 0;
 		Vector3 currentNode = transform.position;
-		while (guideLineNodeCounter < arrow.Nodes.Count - 1 && currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) < guideLineLength) {
+		while (guideLineNodeCounter < arrow.Nodes.Count - 1 && currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) <= guideLineLength) {
 			++lineRenderer.positionCount;
 			Vector3 newNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
 			lineRenderer.SetPosition (lineRenderer.positionCount - 1, new Vector3 (newNode.x, newNode.y, newNode.z + 1));
@@ -25,7 +36,7 @@ public class ArrowController : MonoBehaviour {
 			currentNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
 			++guideLineNodeCounter;
 		}
-		if (currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) < guideLineLength) {
+		if (currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) <= guideLineLength) {
 			++lineRenderer.positionCount;
 			Vector3 newNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
 			lineRenderer.SetPosition (lineRenderer.positionCount - 1, new Vector3 (newNode.x, newNode.y, newNode.z + 1));
@@ -43,18 +54,22 @@ public class ArrowController : MonoBehaviour {
 		nodeCounter = 1;
 		setDestination (arrow.Nodes [nodeCounter].Position.vector3 ());
 		lineRenderer = gameObject.GetComponent <LineRenderer> ();
+		keyCounter = 0;
+		traveledDistance = 0;
 	}
 
 	void Update () {
+		//Move arrow and change to next destination when arrived at destination
 		Vector3 nextPosition = transform.position + velocity * (destination - transform.position).normalized * Time.deltaTime;
 		if (Vector3.Distance (nextPosition, destination) < Vector3.Distance (transform.position, destination)) {
+			traveledDistance += Vector3.Distance (transform.position, nextPosition);
 			transform.position = nextPosition;
 			drawGuideLine ();
 		} else {
 			++nodeCounter;
 			if (nodeCounter < arrow.Nodes.Count) {
-				setDestination (arrow.Nodes [nodeCounter].Position.vector3 ());
 				Debug.Log (Time.time);
+				setDestination (arrow.Nodes [nodeCounter].Position.vector3 ());
 			} else {
 				gameObject.SetActive (false);
 			}
