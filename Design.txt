@@ -1,0 +1,17 @@
+Rhythm arrow
+
+Game:
+	Key elements:
+	1. Arrow
+	2. Follow line
+	3. Notes : tap, hold, follow, swipe
+
+	Details:
+	1. Arrow
+		- Able to duplicate
+		- Able to move toward a designated location based on chart meta data
+
+Editor
+
+
+
