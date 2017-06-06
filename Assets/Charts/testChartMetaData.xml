@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Chart>
 	<Title>Test</Title>
-	<Bpm>200</Bpm>
+	<Bpm>160</Bpm>
 	<Arrows>
 		<Arrow>
 			<SpawnTime>1</SpawnTime>
@@ -42,10 +42,10 @@
 					<SpawnTime>2</SpawnTime>
 				</Key>
 				<Key>
-					<SpawnTime>3</SpawnTime>
+					<SpawnTime>2.75</SpawnTime>
 				</Key>
 				<Key>
-					<SpawnTime>3.5</SpawnTime>
+					<SpawnTime>3</SpawnTime>
 				</Key>
 			</Keys>
 		</Arrow>		
@@ -89,6 +89,20 @@
 					</Position>
 				</Node>
 			</Nodes>
+			<Keys>
+				<Key>
+					<SpawnTime>3.5</SpawnTime>
+				</Key>
+				<Key>
+					<SpawnTime>4</SpawnTime>
+				</Key>
+				<Key>
+					<SpawnTime>4.25</SpawnTime>
+				</Key>
+				<Key>
+					<SpawnTime>4.5</SpawnTime>
+				</Key>
+			</Keys>
 		</Arrow>
 	</Arrows>
 </Chart>
