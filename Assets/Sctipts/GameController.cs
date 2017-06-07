@@ -20,9 +20,10 @@ public class GameController : MonoBehaviour {
 		newArrow.transform.position = position;
 		ArrowController newArrowController = newArrow.GetComponent <ArrowController> ();
 		newArrowController.setArrow (chart.Arrows [arrowCounter]);
+		newArrowController.arrowId = arrowCounter;
 		newArrowController.setVelocity (chart.Bpm * 3);
-		newArrowController.setGuideLineLength (guideLineLength);
 		arrows.Add (newArrow);
+		++arrowCounter;
 	}
 
 	void Start () {
@@ -34,23 +35,28 @@ public class GameController : MonoBehaviour {
 		Debug.Log (chart.Bpm);
 		arrows = new List<GameObject> ();
 		arrowCounter = 0;
-		guideLineLength = 1000;
+		guideLineLength = 500;
 	}
 
 	void FixedUpdate () {
 		//Spawn arrow when in time
-		while (arrowCounter < chart.Arrows.Count - 1 && Time.time >= chart.Arrows [arrowCounter].SpawnTime) {
-			addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
-			++arrowCounter;
-		}
-		if (Time.time >= chart.Arrows [arrowCounter].SpawnTime) {
-			addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
-			gameObject.SetActive (false);;
+		if (arrowCounter < chart.Arrows.Count) {
+			while (arrowCounter < chart.Arrows.Count - 1 && Time.time >= chart.Arrows [arrowCounter].SpawnTime) {
+				addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
+			}
+			if (Time.time >= chart.Arrows [arrowCounter].SpawnTime) {
+				addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
+				//gameObject.SetActive (false);;
+			}
 		}
 	}
 
 	public static GameController getInstance () {
 		return instance;
+	}
+
+	public float getGuideLineLength () {
+		return guideLineLength;
 	}
 
 	public int getGlobalKeyCounter () {

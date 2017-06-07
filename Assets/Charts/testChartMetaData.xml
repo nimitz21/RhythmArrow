@@ -50,7 +50,7 @@
 			</Keys>
 		</Arrow>		
 		<Arrow>
-			<SpawnTime>2</SpawnTime>
+			<SpawnTime>3</SpawnTime>
 			<Nodes>
 				<Node>
 					<Position>
@@ -66,13 +66,13 @@
 				</Node>
 				<Node>
 					<Position>
-						<Absis>500</Absis>
+						<Absis>600</Absis>
 						<Ordinate>900</Ordinate>
 				</Position>
 				</Node>
 				<Node>
 					<Position>
-						<Absis>500</Absis>
+						<Absis>600</Absis>
 						<Ordinate>100</Ordinate>
 					</Position>
 				</Node>

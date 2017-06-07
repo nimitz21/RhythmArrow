@@ -9,9 +9,10 @@ public class ArrowController : MonoBehaviour {
 	private Vector3 destination;
 	private int nodeCounter;
 	private LineRenderer lineRenderer;
-	private float guideLineLength;
 	private int keyCounter;
 	private int traveledNode;
+
+	public int arrowId;
 
 	private void spawnKey () {
 		int keySpawnNodeCounter = traveledNode;
@@ -27,17 +28,19 @@ public class ArrowController : MonoBehaviour {
 		}
 		GameObject newTapKey = Instantiate (GameController.getInstance ().tapKeyPrefab);
 		newTapKey.transform.position = (keySpawnDistance - totalDistanceFromArrow) * Vector3.Normalize (arrow.Nodes [keySpawnNodeCounter].Position.vector3 () - positionBeforeSpawnNode) + positionBeforeSpawnNode;
-		newTapKey.GetComponent <TapKey> ().setKeyId (GameController.getInstance ().getGlobalKeyCounter ());
+		TapKey newTapKeyScript = newTapKey.GetComponent <TapKey> ();
+		newTapKeyScript.setKeyId (GameController.getInstance ().getGlobalKeyCounter ());
 		GameController.getInstance ().incrementGlobalKeyCounter ();
+		newTapKeyScript.setOwnerArrowId (arrowId);
 		++keyCounter;
 	}
 
 	private void spawnKeys () {
 		if (keyCounter < arrow.Keys.Count) {
-			while (keyCounter < arrow.Keys.Count - 1 && arrow.Keys [keyCounter].SpawnTime <= Time.time + guideLineLength / velocity) {
+			while (keyCounter < arrow.Keys.Count - 1 && arrow.Keys [keyCounter].SpawnTime <= Time.time + GameController.getInstance ().getGuideLineLength () / velocity) {
 				spawnKey ();
 			}
-			if (arrow.Keys [keyCounter].SpawnTime <= Time.time + guideLineLength / velocity) {
+			if (arrow.Keys [keyCounter].SpawnTime <= Time.time + GameController.getInstance ().getGuideLineLength () / velocity) {
 				spawnKey ();
 			}
 		}
@@ -49,7 +52,7 @@ public class ArrowController : MonoBehaviour {
 		int guideLineNodeCounter = nodeCounter;
 		float currentGuideLineLength = 0;
 		Vector3 currentNode = transform.position;
-		while (guideLineNodeCounter < arrow.Nodes.Count - 1 && currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) <= guideLineLength) {
+		while (guideLineNodeCounter < arrow.Nodes.Count - 1 && currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) <= GameController.getInstance ().getGuideLineLength ()) {
 			++lineRenderer.positionCount;
 			Vector3 newNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
 			lineRenderer.SetPosition (lineRenderer.positionCount - 1, new Vector3 (newNode.x, newNode.y, newNode.z + 1));
@@ -57,7 +60,7 @@ public class ArrowController : MonoBehaviour {
 			currentNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
 			++guideLineNodeCounter;
 		}
-		if (currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) <= guideLineLength) {
+		if (currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) <= GameController.getInstance ().getGuideLineLength ()) {
 			++lineRenderer.positionCount;
 			Vector3 newNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
 			lineRenderer.SetPosition (lineRenderer.positionCount - 1, new Vector3 (newNode.x, newNode.y, newNode.z + 1));
@@ -67,7 +70,8 @@ public class ArrowController : MonoBehaviour {
 		}
 		if (guideLineNodeCounter < arrow.Nodes.Count) {
 			++lineRenderer.positionCount;
-			lineRenderer.SetPosition (lineRenderer.positionCount - 1, (guideLineLength - currentGuideLineLength) * Vector3.Normalize (arrow.Nodes [guideLineNodeCounter].Position.vector3 () - currentNode) + currentNode);
+			lineRenderer.SetPosition (lineRenderer.positionCount - 1, (GameController.getInstance ().getGuideLineLength () - currentGuideLineLength) * 
+				Vector3.Normalize (arrow.Nodes [guideLineNodeCounter].Position.vector3 () - currentNode) + currentNode + Vector3.forward);
 		}
 	}
 
@@ -109,16 +113,6 @@ public class ArrowController : MonoBehaviour {
 	public void setDestination (Vector3 newDestination) {
 		destination = newDestination;
 		transform.eulerAngles = new Vector3 (0, 0, Mathf.Atan2((destination.y - transform.position.y), (destination.x - transform.position.x)) * Mathf.Rad2Deg - 90);
-	}
-
-	public void setGuideLineLength (float newGuideLineLength) {
-		guideLineLength = newGuideLineLength;
-	}
-
-	void OnMouseOver() {
-		if (Input.GetMouseButtonDown (0))  {
-			Debug.Log ("clicked arrow instead");
-		}
 	}
 
 }
