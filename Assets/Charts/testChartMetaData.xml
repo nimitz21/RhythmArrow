@@ -96,7 +96,18 @@
 			<Keys>
 				<Key>
 					<SpawnTime>4.5</SpawnTime>
-					<Type>tap</Type>
+					<Type>swipe</Type>
+					<Direction>u</Direction>
+				</Key>
+				<Key>
+					<SpawnTime>5.5</SpawnTime>
+					<Type>swipe</Type>
+					<Direction>dr</Direction>
+				</Key>
+				<Key>
+					<SpawnTime>6.5</SpawnTime>
+					<Type>swipe</Type>
+					<Direction>ul</Direction>
 				</Key>
 			</Keys>
 		</Arrow>

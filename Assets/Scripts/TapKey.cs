@@ -5,8 +5,10 @@ public class TapKey : KeySuperClass
 {
 
 	void OnTriggerExit (Collider collider) {
-		Destroy (gameObject);
-		Debug.Log ("Miss " + keyId);
+		if (hit) {
+			Destroy (gameObject);
+			Debug.Log ("Miss " + keyId);
+		}
 	}
 
 	override public void activate () {

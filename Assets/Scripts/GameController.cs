@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
 	public GameObject arrowPrefab;
 	public GameObject tapKeyPrefab;
 	public GameObject holdKeyPrefab;
+	public GameObject swipeKeyPrefab;
 
 	private void addArrow (Vector3 position) {
 		GameObject newArrow = Instantiate (arrowPrefab);

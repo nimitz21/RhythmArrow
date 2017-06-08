@@ -51,7 +51,9 @@ public class HoldKey : KeySuperClass
 	}
 
 	override public void activate () {
-		held = true;
+		if (hit) {
+			held = true;
+		}
 	}
 
 	public void setAvailableGuideLineLength (float newAvailableGuideLineLength) {
