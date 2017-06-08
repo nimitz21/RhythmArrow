@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class ArrowController : MonoBehaviour {
 
-	private Arrow arrow;
-	private float velocity;
 	private Vector3 destination;
 	private int nodeCounter;
 	private LineRenderer lineRenderer;
 	private int keyCounter;
 	private int traveledNode;
 
-	public int arrowId;
+	public Arrow arrow { get; set; }
+	public int arrowId { get; set; }
+	public float velocity { get; set; }
 
 	private void spawnKey () {
 		int keySpawnNodeCounter = traveledNode;
@@ -26,12 +26,22 @@ public class ArrowController : MonoBehaviour {
 			++keySpawnNodeCounter;
 			distanceToNextNode = Vector3.Distance (positionBeforeSpawnNode, arrow.Nodes [keySpawnNodeCounter].Position.vector3 ());
 		}
-		GameObject newTapKey = Instantiate (GameController.getInstance ().tapKeyPrefab);
-		newTapKey.transform.position = (keySpawnDistance - totalDistanceFromArrow) * Vector3.Normalize (arrow.Nodes [keySpawnNodeCounter].Position.vector3 () - positionBeforeSpawnNode) + positionBeforeSpawnNode;
-		TapKey newTapKeyScript = newTapKey.GetComponent <TapKey> ();
-		newTapKeyScript.setKeyId (GameController.getInstance ().getGlobalKeyCounter ());
+		GameObject newKey = null;
+		if (arrow.Keys [keyCounter].Type == "tap") {
+			newKey = Instantiate (GameController.getInstance ().tapKeyPrefab);
+		} else if (arrow.Keys [keyCounter].Type == "hold") {
+			newKey = Instantiate (GameController.getInstance ().holdKeyPrefab);
+			HoldKey holdKey = newKey.GetComponent <HoldKey> ();
+			holdKey.setAvailableGuideLineLength (GameController.getInstance ().getGuideLineLength () - keySpawnDistance);
+			holdKey.setHoldLineLength (arrow.Keys [keyCounter].Duration * velocity);
+			holdKey.setNodesAfter (arrow.nodesToVector3 ().GetRange (keySpawnNodeCounter, arrow.Nodes.Count - keySpawnNodeCounter));
+			holdKey.setOwnerArrow (transform);
+		}
+		newKey.transform.position = (keySpawnDistance - totalDistanceFromArrow) * Vector3.Normalize (arrow.Nodes [keySpawnNodeCounter].Position.vector3 () - positionBeforeSpawnNode) + positionBeforeSpawnNode;
+		KeySuperClass newKeySuperClass = newKey.GetComponent <KeySuperClass> ();
+		newKeySuperClass.setKeyId (GameController.getInstance ().getGlobalKeyCounter ());
 		GameController.getInstance ().incrementGlobalKeyCounter ();
-		newTapKeyScript.setOwnerArrowId (arrowId);
+		newKeySuperClass.setOwnerArrowId (arrowId);
 		++keyCounter;
 	}
 
@@ -43,35 +53,6 @@ public class ArrowController : MonoBehaviour {
 			if (arrow.Keys [keyCounter].SpawnTime <= Time.time + GameController.getInstance ().getGuideLineLength () / velocity) {
 				spawnKey ();
 			}
-		}
-	}
-
-	private void drawGuideLine () {
-		lineRenderer.positionCount = 1;
-		lineRenderer.SetPosition (0, new Vector3 (transform.position.x, transform.position.y, transform.position.z + 1));
-		int guideLineNodeCounter = nodeCounter;
-		float currentGuideLineLength = 0;
-		Vector3 currentNode = transform.position;
-		while (guideLineNodeCounter < arrow.Nodes.Count - 1 && currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) <= GameController.getInstance ().getGuideLineLength ()) {
-			++lineRenderer.positionCount;
-			Vector3 newNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
-			lineRenderer.SetPosition (lineRenderer.positionCount - 1, new Vector3 (newNode.x, newNode.y, newNode.z + 1));
-			currentGuideLineLength += Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ());
-			currentNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
-			++guideLineNodeCounter;
-		}
-		if (currentGuideLineLength + Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ()) <= GameController.getInstance ().getGuideLineLength ()) {
-			++lineRenderer.positionCount;
-			Vector3 newNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
-			lineRenderer.SetPosition (lineRenderer.positionCount - 1, new Vector3 (newNode.x, newNode.y, newNode.z + 1));
-			currentGuideLineLength += Vector3.Distance (currentNode, arrow.Nodes [guideLineNodeCounter].Position.vector3 ());
-			currentNode = arrow.Nodes [guideLineNodeCounter].Position.vector3 ();
-			++guideLineNodeCounter;
-		}
-		if (guideLineNodeCounter < arrow.Nodes.Count) {
-			++lineRenderer.positionCount;
-			lineRenderer.SetPosition (lineRenderer.positionCount - 1, (GameController.getInstance ().getGuideLineLength () - currentGuideLineLength) * 
-				Vector3.Normalize (arrow.Nodes [guideLineNodeCounter].Position.vector3 () - currentNode) + currentNode + Vector3.forward);
 		}
 	}
 
@@ -89,7 +70,7 @@ public class ArrowController : MonoBehaviour {
 		Vector3 nextPosition = transform.position + velocity * (destination - transform.position).normalized * Time.deltaTime;
 		if (Vector3.Distance (nextPosition, destination) < Vector3.Distance (transform.position, destination)) {
 			transform.position = nextPosition;
-			drawGuideLine ();
+			GetComponent <LnRenderer> ().drawLine (GameController.getInstance ().getGuideLineLength (), arrow.nodesToVector3 (). GetRange(nodeCounter, arrow.Nodes.Count - nodeCounter), 3);
 			spawnKeys ();
 		} else {
 			++nodeCounter;
@@ -100,10 +81,6 @@ public class ArrowController : MonoBehaviour {
 				gameObject.SetActive (false);
 			}
 		}
-	}
-
-	public void setArrow (Arrow newArrow) {
-		arrow = newArrow;
 	}
 
 	public void setVelocity (float newVelocity) {

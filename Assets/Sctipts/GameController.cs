@@ -14,22 +14,21 @@ public class GameController : MonoBehaviour {
 
 	public GameObject arrowPrefab;
 	public GameObject tapKeyPrefab;
+	public GameObject holdKeyPrefab;
 
 	private void addArrow (Vector3 position) {
 		GameObject newArrow = Instantiate (arrowPrefab);
 		newArrow.transform.position = position;
 		ArrowController newArrowController = newArrow.GetComponent <ArrowController> ();
-		newArrowController.setArrow (chart.Arrows [arrowCounter]);
+		newArrowController.arrow = chart.Arrows [arrowCounter];
 		newArrowController.arrowId = arrowCounter;
-		newArrowController.setVelocity (chart.Bpm * 3);
+		newArrowController.velocity = chart.Bpm * 3;
 		arrows.Add (newArrow);
 		++arrowCounter;
 	}
 
 	void Start () {
 		instance = this;
-		Debug.Log (Screen.height);
-		Debug.Log (Screen.width);
 		chart = Chart.Load (Application.dataPath + "//Charts//testChartMetaData.xml");
 		Debug.Log (chart.Title);
 		Debug.Log (chart.Bpm);

@@ -40,12 +40,16 @@
 			<Keys>
 				<Key>
 					<SpawnTime>2</SpawnTime>
+					<Type>tap</Type>
 				</Key>
 				<Key>
 					<SpawnTime>2.75</SpawnTime>
+					<Type>tap</Type>
 				</Key>
 				<Key>
 					<SpawnTime>3</SpawnTime>
+					<Type>hold</Type>
+					<Duration>1</Duration>
 				</Key>
 			</Keys>
 		</Arrow>		
@@ -91,16 +95,8 @@
 			</Nodes>
 			<Keys>
 				<Key>
-					<SpawnTime>3.5</SpawnTime>
-				</Key>
-				<Key>
-					<SpawnTime>4</SpawnTime>
-				</Key>
-				<Key>
-					<SpawnTime>4.25</SpawnTime>
-				</Key>
-				<Key>
 					<SpawnTime>4.5</SpawnTime>
+					<Type>tap</Type>
 				</Key>
 			</Keys>
 		</Arrow>
