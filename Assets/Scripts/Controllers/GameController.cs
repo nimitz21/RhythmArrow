@@ -16,13 +16,13 @@ public class GameController : MonoBehaviour {
 	public GameObject tapKeyPrefab;
 	public GameObject holdKeyPrefab;
 	public GameObject swipeKeyPrefab;
+	public GameObject followKeyPrefab;
 
 	private void addArrow (Vector3 position) {
 		GameObject newArrow = Instantiate (arrowPrefab);
 		newArrow.transform.position = position;
 		ArrowController newArrowController = newArrow.GetComponent <ArrowController> ();
 		newArrowController.arrow = chart.Arrows [arrowCounter];
-		newArrowController.arrowId = arrowCounter;
 		newArrowController.velocity = chart.Bpm * 3;
 		arrows.Add (newArrow);
 		++arrowCounter;

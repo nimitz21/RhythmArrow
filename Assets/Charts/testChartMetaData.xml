@@ -111,5 +111,36 @@
 				</Key>
 			</Keys>
 		</Arrow>
+		<Arrow>
+			<SpawnTime>7.5</SpawnTime>
+			<Nodes>
+				<Node>
+					<Position>
+						<Absis>100</Absis>
+						<Ordinate>500</Ordinate>
+					</Position>
+				</Node>
+				<Node>
+					<Position>
+						<Absis>900</Absis>
+						<Ordinate>500</Ordinate>
+					</Position>
+				</Node>
+			</Nodes>
+			<Keys>
+				<Key>
+					<SpawnTime>7.5</SpawnTime>
+					<Type>follow</Type>
+					<Children>
+						<Child>
+							<SpawnTime>7.75</SpawnTime>
+						</Child>
+						<Child>
+							<SpawnTime>8</SpawnTime>
+						</Child>
+					</Children>
+				</Key>
+			</Keys>
+		</Arrow>
 	</Arrows>
 </Chart>

@@ -11,7 +11,6 @@ public class ArrowController : MonoBehaviour {
 	private int traveledNode;
 
 	public Arrow arrow { get; set; }
-	public int arrowId { get; set; }
 	public float velocity { get; set; }
 
 	private GameObject getTapKeyInstance () { 
@@ -59,6 +58,14 @@ public class ArrowController : MonoBehaviour {
 		return newKey; 
 	}
 
+	private GameObject getFollowKeyInstance () {
+		GameObject newkey = Instantiate (GameController.getInstance ().followKeyPrefab);
+		FollowKey followKey = newkey.GetComponent <FollowKey> ();
+		followKey.setChildrenSpawnTime (arrow.Keys [keyCounter].getChildrenSpawnTimes ());
+		followKey.setOwnerArrow (transform);
+		return newkey;
+	}
+
 	private void instantiateKey (int keySpawnNodeCounter, Vector3 positionBeforeSpawnNode, float totalDistanceFromArrow, float keySpawnDistance) {
 		GameObject newKey = null;
 		switch (arrow.Keys [keyCounter].Type) {
@@ -71,13 +78,12 @@ public class ArrowController : MonoBehaviour {
 		case "swipe":
 			newKey = getSwipeKeyInstance ();
 			break;
+		case "follow":
+			newKey = getFollowKeyInstance ();
+			break;
 		}
 		newKey.transform.position = (keySpawnDistance - totalDistanceFromArrow) * Vector3.Normalize (arrow.Nodes [keySpawnNodeCounter].Position.vector3 () - positionBeforeSpawnNode) + positionBeforeSpawnNode;
-		KeySuperClass newKeySuperClass = newKey.GetComponent <KeySuperClass> ();
-		newKeySuperClass.setKeyId (GameController.getInstance ().getGlobalKeyCounter ());
-		GameController.getInstance ().incrementGlobalKeyCounter ();
-		newKeySuperClass.setOwnerArrowId (arrowId);
-		newKeySuperClass.setSpawnTime (arrow.Keys [keyCounter].SpawnTime);
+		newKey.GetComponent <KeySuperClass> ().setSpawnTime (arrow.Keys [keyCounter].SpawnTime);
 	}
 
 	private void spawnKey () {
@@ -134,13 +140,13 @@ public class ArrowController : MonoBehaviour {
 		}
 	}
 
-	public void setVelocity (float newVelocity) {
-		velocity = newVelocity;
-	}
-
 	public void setDestination (Vector3 newDestination) {
 		destination = newDestination;
 		transform.eulerAngles = new Vector3 (0, 0, Mathf.Atan2((destination.y - transform.position.y), (destination.x - transform.position.x)) * Mathf.Rad2Deg - 90);
+	}
+
+	public int getTraveledNode () {
+		return traveledNode;
 	}
 
 }
