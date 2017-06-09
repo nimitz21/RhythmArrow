@@ -58,11 +58,12 @@ public class ArrowController : MonoBehaviour {
 		return newKey; 
 	}
 
-	private GameObject getFollowKeyInstance () {
+	private GameObject getFollowKeyInstance (int keySpawnNodeCounter) {
 		GameObject newkey = Instantiate (GameController.getInstance ().followKeyPrefab);
 		FollowKey followKey = newkey.GetComponent <FollowKey> ();
 		followKey.setChildrenSpawnTime (arrow.Keys [keyCounter].getChildrenSpawnTimes ());
 		followKey.setOwnerArrow (transform);
+		followKey.setParentSpawnNode (keySpawnNodeCounter);
 		return newkey;
 	}
 
@@ -79,7 +80,7 @@ public class ArrowController : MonoBehaviour {
 			newKey = getSwipeKeyInstance ();
 			break;
 		case "follow":
-			newKey = getFollowKeyInstance ();
+			newKey = getFollowKeyInstance (keySpawnNodeCounter);
 			break;
 		}
 		newKey.transform.position = (keySpawnDistance - totalDistanceFromArrow) * Vector3.Normalize (arrow.Nodes [keySpawnNodeCounter].Position.vector3 () - positionBeforeSpawnNode) + positionBeforeSpawnNode;

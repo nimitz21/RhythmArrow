@@ -112,8 +112,14 @@
 			</Keys>
 		</Arrow>
 		<Arrow>
-			<SpawnTime>7.5</SpawnTime>
+			<SpawnTime>6.5</SpawnTime>
 			<Nodes>
+				<Node>
+					<Position>
+						<Absis>500</Absis>
+						<Ordinate>100</Ordinate>
+					</Position>
+				</Node>
 				<Node>
 					<Position>
 						<Absis>100</Absis>
@@ -136,7 +142,7 @@
 							<SpawnTime>7.75</SpawnTime>
 						</Child>
 						<Child>
-							<SpawnTime>8</SpawnTime>
+							<SpawnTime>7.8</SpawnTime>
 						</Child>
 					</Children>
 				</Key>

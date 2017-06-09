@@ -10,9 +10,10 @@ public class FollowKey : KeySuperClass
 	private bool childSpawned = false;
 	private Transform ownerArrow;
 	private ArrowController ownerArrowController;
+	private int parentSpawnNode;
 
 	private void spawnChild () {
-		int childSpawnNodeCounter = ownerArrowController.getTraveledNode ();
+		int childSpawnNodeCounter = parentSpawnNode;
 		Vector3 positionBeforeSpawnNode = transform.position;
 		float totalDistanceFromParent = 0;
 		float distanceToNextNode = Vector3.Distance (positionBeforeSpawnNode, ownerArrowController.arrow.Nodes [childSpawnNodeCounter].Position.vector3 ());
@@ -32,6 +33,7 @@ public class FollowKey : KeySuperClass
 			childScript.setChildrenSpawnTime (new List<float> ());
 		}
 		childScript.setOwnerArrow (ownerArrow);
+		childScript.parentSpawnNode = childSpawnNodeCounter;
 		newChild.transform.position = (childSpawnDistance - totalDistanceFromParent) * 
 			Vector3.Normalize (ownerArrowController.arrow.Nodes [childSpawnNodeCounter].Position.vector3 () - positionBeforeSpawnNode) + positionBeforeSpawnNode;
 		newChild.GetComponent <KeySuperClass> ().setSpawnTime (childrenSpawnTime [0]);
@@ -43,6 +45,7 @@ public class FollowKey : KeySuperClass
 		if (childrenSpawnTime.Count > 0) {
 			if (!childSpawned) {
 				if (childrenSpawnTime [0] <= Time.time + GameController.getInstance ().getGuideLineLength () / ownerArrowController.velocity) {
+					Debug.Log (childrenSpawnTime [0]);
 					spawnChild ();
 				}
 			}
@@ -58,6 +61,9 @@ public class FollowKey : KeySuperClass
 		ownerArrowController = ownerArrow.GetComponent <ArrowController> ();
 	}
 
+	public void setParentSpawnNode (int newParentSpawnNode) {
+		parentSpawnNode = newParentSpawnNode;
+	}
 
 	override public void unHold () {
 		beingHeld = false;
@@ -89,7 +95,7 @@ public class FollowKey : KeySuperClass
 		} else {
 			if (beingHeld) {
 				Destroy (gameObject);
-				Debug.Log ("Perfect");
+				Debug.Log ("Perfect follow");
 			}
 		}
 	}
