@@ -11,6 +11,8 @@ public class FollowKey : KeySuperClass
 	private Transform ownerArrow;
 	private ArrowController ownerArrowController;
 	private int parentSpawnNode;
+	private LnRenderer lineRenderer;
+	private float connectorLineLength = 0;
 
 	private void spawnChild () {
 		int childSpawnNodeCounter = parentSpawnNode;
@@ -39,11 +41,17 @@ public class FollowKey : KeySuperClass
 		newChild.GetComponent <KeySuperClass> ().setSpawnTime (childrenSpawnTime [0]);
 		childSpawned = true;
 	}
+		
+	void Start () {
+		lineRenderer = GetComponent <LnRenderer> ();
+	}
 
 	void FixedUpdate ()
 	{
 		if (childrenSpawnTime.Count > 0) {
 			if (!childSpawned) {
+				connectorLineLength += Time.deltaTime * ownerArrowController.velocity;
+				lineRenderer.drawLine (connectorLineLength, ownerArrowController.arrow.nodesToVector3 ().GetRange (parentSpawnNode, ownerArrowController.arrow.Nodes.Count - parentSpawnNode), 2);
 				if (childrenSpawnTime [0] <= Time.time + GameController.getInstance ().getGuideLineLength () / ownerArrowController.velocity) {
 					Debug.Log (childrenSpawnTime [0]);
 					spawnChild ();

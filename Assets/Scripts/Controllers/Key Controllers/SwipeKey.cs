@@ -32,7 +32,7 @@ public class SwipeKey : KeySuperClass
 
 	public void setRotation (float newRotation) {
 		rotation = newRotation;
-		transform.GetChild (0).Rotate (0, 0, rotation);
+		transform.GetChild (2).Rotate (0, 0, rotation);
 	}
 
 	override public void tap () {

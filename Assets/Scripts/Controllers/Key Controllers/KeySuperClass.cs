@@ -7,9 +7,9 @@ public abstract class KeySuperClass : MonoBehaviour {
 
 	private UnityAction unHoldListener; 
 
-	protected bool hit = false;
-	protected float spawnTime;
-
+	public bool good = false;
+	public bool perfect = false;
+	public float spawnTime;
 
 	void Awake () {
 		unHoldListener = new UnityAction (unHold);
@@ -23,26 +23,10 @@ public abstract class KeySuperClass : MonoBehaviour {
 		InputController.stopListeningToUnhold (unHoldListener);
 	}
 
-	public void setSpawnTime (float newSpawnTime) {
-		spawnTime = newSpawnTime;
-	}
-
 	public abstract void tap ();
 
 	public abstract void hold ();
 
 	public abstract void unHold ();
-
-	protected abstract void OnTriggerExit (Collider collider);
-
-	protected virtual void OnTriggerStay (Collider collider) {
-		if (!hit) {
-			if (Time.time > spawnTime - 0.1) { 
-				if (collider.transform.tag == "Arrow") {
-					hit = true;
-				}
-			}
-		}
-	}
 
 }

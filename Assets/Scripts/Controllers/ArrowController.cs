@@ -20,9 +20,8 @@ public class ArrowController : MonoBehaviour {
 	private GameObject getHoldKeyInstance (int keySpawnNodeCounter, float keySpawnDistance) {
 		GameObject newKey = Instantiate (GameController.getInstance ().holdKeyPrefab);
 		HoldKey holdKey = newKey.GetComponent <HoldKey> ();
-		holdKey.setAvailableGuideLineLength (GameController.getInstance ().getGuideLineLength () - keySpawnDistance);
 		holdKey.setHoldLineLength (arrow.Keys [keyCounter].Duration * velocity);
-		holdKey.setNodesAfter (arrow.nodesToVector3 ().GetRange (keySpawnNodeCounter, arrow.Nodes.Count - keySpawnNodeCounter));
+		holdKey.setFollowingNodes (arrow.nodesToVector3 ().GetRange (keySpawnNodeCounter, arrow.Nodes.Count - keySpawnNodeCounter));
 		holdKey.setOwnerArrow (transform);
 		return newKey;
 	}

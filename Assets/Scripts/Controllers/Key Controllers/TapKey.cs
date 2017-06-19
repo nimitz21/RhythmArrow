@@ -6,8 +6,10 @@ public class TapKey : KeySuperClass
 
 	override public void tap () {
 		Destroy (gameObject);
-		if (hit) {
+		if (perfect) {
 			Debug.Log ("Perfect");
+		} else if (good) {
+			Debug.Log ("Good");
 		} else {
 			Debug.Log ("Bad");
 		}
@@ -19,13 +21,6 @@ public class TapKey : KeySuperClass
 
 	override public void unHold () {
 		//do nothing
-	}
-
-	protected override void OnTriggerExit (Collider collider) {
-		if (hit) {
-			Destroy (gameObject);
-			Debug.Log ("Miss");
-		}
 	}
 
 }

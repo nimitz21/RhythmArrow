@@ -4,9 +4,9 @@ using System.Collections.Generic;
 public class HoldKey : KeySuperClass
 {
 	private bool beingHeld = false;
-	private float availableGuideLineLength;
+	private float availableGuideLineLength = 0;
 	private float holdLineLength;
-	private List<Vector3> nodesAfter;
+	private List<Vector3> followingNodes;
 	private Transform ownerArrow;
 	private ArrowController ownerArrowController;
 	private LnRenderer lineRenderer;
@@ -26,34 +26,33 @@ public class HoldKey : KeySuperClass
 				Destroy (gameObject);
 				Debug.Log ("Perfect");
 			} else {
-				beingHeldLineRenderer.drawLine (beingHeldLineLength, nodesAfter, 1);
+				beingHeldLineRenderer.drawLine (beingHeldLineLength, followingNodes, 1);
 			}
 		}
 		availableGuideLineLength += ownerArrowController.velocity * Time.deltaTime;
 		if (availableGuideLineLength < holdLineLength) {
-			lineRenderer.drawLine (availableGuideLineLength, nodesAfter, 2);
+			lineRenderer.drawLine (availableGuideLineLength, followingNodes, 2);
 		} else {
-			lineRenderer.drawLine (holdLineLength, nodesAfter, 2);
+			lineRenderer.drawLine (holdLineLength, followingNodes, 2);
 		}
-	}
-
-	public void setAvailableGuideLineLength (float newAvailableGuideLineLength) {
-		availableGuideLineLength = newAvailableGuideLineLength;
 	}
 
 	public void setHoldLineLength (float newHoldLineLength) {
 		holdLineLength = newHoldLineLength;
 	}
 
-	public void setNodesAfter (List<Vector3> newNodesAfter) {
-		nodesAfter = newNodesAfter;
+	public void setFollowingNodes (List<Vector3> newFollowingNodes) {
+		followingNodes = newFollowingNodes;
 	}
 
 	public void setOwnerArrow (Transform newOwnerArrow) {
 		ownerArrow = newOwnerArrow;
 	}
 
-
+	public bool getBeingHeld () {
+		return beingHeld;
+	}
+		
 	override public void unHold () {
 		beingHeld = false;
 	}
@@ -63,15 +62,8 @@ public class HoldKey : KeySuperClass
 	}
 
 	override public void hold () {
-		if (hit) {
+		if (perfect) {
 			beingHeld = true;
-		}
-	}
-
-	protected override void OnTriggerExit (Collider collider) {
-		if (!beingHeld) {
-			Destroy (gameObject);
-			Debug.Log ("Miss");
 		}
 	}
 
