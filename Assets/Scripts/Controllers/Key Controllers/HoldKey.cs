@@ -16,7 +16,7 @@ public class HoldKey : KeySuperClass
 	void Start () {
 		ownerArrowController = ownerArrow.GetComponent <ArrowController> ();
 		lineRenderer = transform.GetComponent <LnRenderer> ();
-		beingHeldLineRenderer = transform.GetChild (0).GetComponent <LnRenderer> ();
+		beingHeldLineRenderer = transform.GetChild (2).GetComponent <LnRenderer> ();
 	}
 
 	void FixedUpdate () {

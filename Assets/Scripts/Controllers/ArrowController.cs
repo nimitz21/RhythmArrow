@@ -83,7 +83,7 @@ public class ArrowController : MonoBehaviour {
 			break;
 		}
 		newKey.transform.position = (keySpawnDistance - totalDistanceFromArrow) * Vector3.Normalize (arrow.Nodes [keySpawnNodeCounter].Position.vector3 () - positionBeforeSpawnNode) + positionBeforeSpawnNode;
-		newKey.GetComponent <KeySuperClass> ().setSpawnTime (arrow.Keys [keyCounter].SpawnTime);
+		newKey.GetComponent <KeySuperClass> ().spawnTime = arrow.Keys [keyCounter].SpawnTime;
 	}
 
 	private void spawnKey () {

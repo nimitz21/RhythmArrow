@@ -34,9 +34,12 @@ public class SwipeKey : KeySuperClass
 		rotation = newRotation;
 		transform.GetChild (2).Rotate (0, 0, rotation);
 	}
+	public bool getIsSwiped () {
+		return isSwiped;
+	}
 
 	override public void tap () {
-		if (hit) {
+		if (good || perfect) {
 			isSwiped = true;
 			beingSwiped = true;
 		} else {
@@ -51,13 +54,6 @@ public class SwipeKey : KeySuperClass
 
 	override public void unHold () {
 		beingSwiped = false;
-	}
-
-	protected override void OnTriggerExit (Collider collider) {
-		if (hit && !isSwiped) {
-			Destroy (gameObject);
-			Debug.Log ("Miss");
-		}
 	}
 		
 }

@@ -10,8 +10,8 @@ public class holdGood : goodZone
 	}
 
 	protected override void OnTriggerExit (Collider collider) {
-		if (!parentholdKey.getBeingHeld) {
-			Destroy (gameObject);
+		if (!parentholdKey.getBeingHeld ()) {
+			Destroy (transform.parent.gameObject);
 			Debug.Log ("Miss");
 		}
 	}

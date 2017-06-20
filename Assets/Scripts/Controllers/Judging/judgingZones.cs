@@ -6,7 +6,7 @@ public abstract class judgingZones : MonoBehaviour
 
 	protected KeySuperClass parentKey; 
 
-	void Start () {
+	void Awake () {
 		parentKey = GetComponentInParent <KeySuperClass> ();
 	}
 

@@ -28,7 +28,7 @@ public class FollowKey : KeySuperClass
 		}
 		GameObject newChild = Instantiate (GameController.getInstance ().followKeyPrefab);
 		FollowKey childScript = newChild.GetComponent <FollowKey> ();
-		childScript.setSpawnTime (childrenSpawnTime [0]);
+		childScript.spawnTime = childrenSpawnTime [0];
 		if (childrenSpawnTime.Count > 0) {
  			childScript.setChildrenSpawnTime (childrenSpawnTime.GetRange (1, childrenSpawnTime.Count - 1));
 		} else {
@@ -38,7 +38,6 @@ public class FollowKey : KeySuperClass
 		childScript.parentSpawnNode = childSpawnNodeCounter;
 		newChild.transform.position = (childSpawnDistance - totalDistanceFromParent) * 
 			Vector3.Normalize (ownerArrowController.arrow.Nodes [childSpawnNodeCounter].Position.vector3 () - positionBeforeSpawnNode) + positionBeforeSpawnNode;
-		newChild.GetComponent <KeySuperClass> ().setSpawnTime (childrenSpawnTime [0]);
 		childSpawned = true;
 	}
 		
@@ -53,7 +52,6 @@ public class FollowKey : KeySuperClass
 				connectorLineLength += Time.deltaTime * ownerArrowController.velocity;
 				lineRenderer.drawLine (connectorLineLength, ownerArrowController.arrow.nodesToVector3 ().GetRange (parentSpawnNode, ownerArrowController.arrow.Nodes.Count - parentSpawnNode), 2);
 				if (childrenSpawnTime [0] <= Time.time + GameController.getInstance ().getGuideLineLength () / ownerArrowController.velocity) {
-					Debug.Log (childrenSpawnTime [0]);
 					spawnChild ();
 				}
 			}
@@ -73,6 +71,10 @@ public class FollowKey : KeySuperClass
 		parentSpawnNode = newParentSpawnNode;
 	}
 
+	public bool getBeingHeld () {
+		return beingHeld;
+	}
+
 	override public void unHold () {
 		beingHeld = false;
 	}
@@ -84,29 +86,7 @@ public class FollowKey : KeySuperClass
 	override public void hold () {
 		beingHeld = true;
 	}
-
-	protected override void OnTriggerExit (Collider collider) {
-		if (!beingHeld) {
-			Destroy (gameObject);
-			Debug.Log ("Miss");
-		}
-	}
-
-	protected override void OnTriggerStay (Collider collider)
-	{
-		if (!hit) {
-			if (Time.time > spawnTime - 0.1) { 
-				if (collider.transform.tag == "Arrow") {
-					hit = true;
-				}
-			}
-		} else {
-			if (beingHeld) {
-				Destroy (gameObject);
-				Debug.Log ("Perfect follow");
-			}
-		}
-	}
+		
 }
 
 
