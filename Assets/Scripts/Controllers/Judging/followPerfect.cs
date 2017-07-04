@@ -24,8 +24,9 @@ public class followPerfect : perfectZone
 			}
 		} else {
 			if (parentFollowKey.getBeingHeld ()) {
+				ScoreController.getInstance ().addPerfectScore ();
 				Destroy (transform.parent.gameObject);
-				Debug.Log ("Perfect follow");
+				Debug.Log ("Perfect");
 			}
 		}
 	}

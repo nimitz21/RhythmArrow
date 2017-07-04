@@ -91,7 +91,7 @@ public class ArrowController : MonoBehaviour {
 		Vector3 positionBeforeSpawnNode = transform.position;
 		float totalDistanceFromArrow = 0;
 		float distanceToNextNode = Vector3.Distance (positionBeforeSpawnNode, arrow.Nodes [keySpawnNodeCounter].Position.vector3 ());
-		float keySpawnDistance = (arrow.Keys [keyCounter].SpawnTime - Time.time) * velocity;
+		float keySpawnDistance = (arrow.Keys [keyCounter].SpawnTime - GameController.getInstance ().getTime ()) * velocity;
 		while (totalDistanceFromArrow + distanceToNextNode < keySpawnDistance) {
 			totalDistanceFromArrow += distanceToNextNode;
 			positionBeforeSpawnNode = arrow.Nodes [keySpawnNodeCounter].Position.vector3 ();
@@ -104,10 +104,10 @@ public class ArrowController : MonoBehaviour {
 
 	private void spawnKeys () {
 		if (keyCounter < arrow.Keys.Count) {
-			while (keyCounter < arrow.Keys.Count - 1 && arrow.Keys [keyCounter].SpawnTime <= Time.time + GameController.getInstance ().getGuideLineLength () / velocity) {
+			while (keyCounter < arrow.Keys.Count - 1 && arrow.Keys [keyCounter].SpawnTime <= GameController.getInstance ().getTime () + GameController.getInstance ().getGuideLineLength () / velocity) {
 				spawnKey ();
 			}
-			if (arrow.Keys [keyCounter].SpawnTime <= Time.time + GameController.getInstance ().getGuideLineLength () / velocity) {
+			if (arrow.Keys [keyCounter].SpawnTime <= GameController.getInstance ().getTime () + GameController.getInstance ().getGuideLineLength () / velocity) {
 				spawnKey ();
 			}
 		}
@@ -122,20 +122,20 @@ public class ArrowController : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		//Move arrow and change to next destination when arrived at destination
-		//Debug.Log ("Time " + Time.time);
-		Vector3 nextPosition = transform.position + velocity * (destination - transform.position).normalized * Time.deltaTime;
-		if (Vector3.Distance (nextPosition, destination) < Vector3.Distance (transform.position, destination)) {
-			transform.position = nextPosition;
-			lineRenderer.drawLine (GameController.getInstance ().getGuideLineLength (), arrow.nodesToVector3 (). GetRange(nodeCounter, arrow.Nodes.Count - nodeCounter), 3);
-			spawnKeys ();
-		} else {
-			++nodeCounter;
-			++traveledNode;
-			if (nodeCounter < arrow.Nodes.Count) {
-				setDestination (arrow.Nodes [nodeCounter].Position.vector3 ());
+		if (!GameController.getInstance ().getPaused ()) {
+			Vector3 nextPosition = transform.position + velocity * (destination - transform.position).normalized * GameController.getInstance ().getDeltaTime ();
+			if (Vector3.Distance (nextPosition, destination) < Vector3.Distance (transform.position, destination)) {
+				transform.position = nextPosition;
+				lineRenderer.drawLine (GameController.getInstance ().getGuideLineLength (), arrow.nodesToVector3 ().GetRange (nodeCounter, arrow.Nodes.Count - nodeCounter), 3);
+				spawnKeys ();
 			} else {
-				gameObject.SetActive (false);
+				++nodeCounter;
+				++traveledNode;
+				if (nodeCounter < arrow.Nodes.Count) {
+					setDestination (arrow.Nodes [nodeCounter].Position.vector3 ());
+				} else {
+					gameObject.SetActive (false);
+				}
 			}
 		}
 	}

@@ -7,7 +7,7 @@ public class InputController : MonoBehaviour {
 
 	private static UnityEvent unHoldEvent = new UnityEvent ();
 
-	void Update () {
+	void FixedUpdate () {
 		RaycastHit hit;
 		int keyLayerMask = 1 << 9;
 		if (Input.GetMouseButtonDown (0)) {

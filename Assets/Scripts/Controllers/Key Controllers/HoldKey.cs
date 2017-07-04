@@ -21,15 +21,21 @@ public class HoldKey : KeySuperClass
 
 	void FixedUpdate () {
 		if (beingHeld) {
-			beingHeldLineLength += ownerArrowController.velocity * Time.deltaTime;
+			ScoreController.getInstance ().addHoldScore ();
+			beingHeldLineLength += ownerArrowController.velocity * GameController.getInstance ().getDeltaTime ();
 			if (beingHeldLineLength > holdLineLength) {
 				Destroy (gameObject);
 				Debug.Log ("Perfect");
 			} else {
 				beingHeldLineRenderer.drawLine (beingHeldLineLength, followingNodes, 1);
 			}
+		} else {
+			if (beingHeldLineLength > 0) {
+				Destroy (gameObject);
+				Debug.Log ("Good");
+			}
 		}
-		availableGuideLineLength += ownerArrowController.velocity * Time.deltaTime;
+		availableGuideLineLength += ownerArrowController.velocity * GameController.getInstance ().getDeltaTime ();
 		if (availableGuideLineLength < holdLineLength) {
 			lineRenderer.drawLine (availableGuideLineLength, followingNodes, 2);
 		} else {

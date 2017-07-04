@@ -49,9 +49,9 @@ public class FollowKey : KeySuperClass
 	{
 		if (childrenSpawnTime.Count > 0) {
 			if (!childSpawned) {
-				connectorLineLength += Time.deltaTime * ownerArrowController.velocity;
+				connectorLineLength += GameController.getInstance ().getDeltaTime () * ownerArrowController.velocity;
 				lineRenderer.drawLine (connectorLineLength, ownerArrowController.arrow.nodesToVector3 ().GetRange (parentSpawnNode, ownerArrowController.arrow.Nodes.Count - parentSpawnNode), 2);
-				if (childrenSpawnTime [0] <= Time.time + GameController.getInstance ().getGuideLineLength () / ownerArrowController.velocity) {
+				if (childrenSpawnTime [0] <= GameController.getInstance ().getTime () + GameController.getInstance ().getGuideLineLength () / ownerArrowController.velocity) {
 					spawnChild ();
 				}
 			}

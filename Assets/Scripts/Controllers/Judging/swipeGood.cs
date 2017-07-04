@@ -8,8 +8,7 @@ public class swipeGood : goodZone
 	void Start () {
 		parentSwipeKey = GetComponentInParent <SwipeKey> ();
 	}
-
-
+		
 	protected override void OnTriggerExit (Collider collider) {
 		if (parentKey.good && !parentSwipeKey.getIsSwiped ()) {
 			Destroy (transform.parent.gameObject);

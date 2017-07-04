@@ -6,7 +6,7 @@ public class holdPerfect : perfectZone
 
 	protected override void OnTriggerExit (Collider collider)
 	{
-		//do nothing
+		parentKey.perfect = false;
 	}
 
 }

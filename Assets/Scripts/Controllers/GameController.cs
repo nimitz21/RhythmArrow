@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour {
 	private int arrowCounter;
 	private float guideLineLength;
 	private int globalKeyCounter;
+	private float time;
+	private float deltaTime;
+	private bool paused;
 
 	public GameObject arrowPrefab;
 	public GameObject tapKeyPrefab;
@@ -36,18 +39,24 @@ public class GameController : MonoBehaviour {
 		arrows = new List<GameObject> ();
 		arrowCounter = 0;
 		guideLineLength = 500;
+		time = -0.02f * guideLineLength;
+		paused = false;
 	}
 
 	void FixedUpdate () {
-		//Spawn arrow when in time
-		if (arrowCounter < chart.Arrows.Count) {
-			while (arrowCounter < chart.Arrows.Count - 1 && Time.time >= chart.Arrows [arrowCounter].SpawnTime) {
-				addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
+		if (!paused) {
+			deltaTime = Time.deltaTime;
+			time += deltaTime;
+			if (arrowCounter < chart.Arrows.Count) {
+				while (arrowCounter < chart.Arrows.Count - 1 && time >= chart.Arrows [arrowCounter].SpawnTime) {
+					addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
+				}
+				if (time >= chart.Arrows [arrowCounter].SpawnTime) {
+					addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
+				}
 			}
-			if (Time.time >= chart.Arrows [arrowCounter].SpawnTime) {
-				addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
-				//gameObject.SetActive (false);;
-			}
+		} else {
+			deltaTime = 0;
 		}
 	}
 
@@ -65,6 +74,22 @@ public class GameController : MonoBehaviour {
 
 	public void incrementGlobalKeyCounter () {
 		++globalKeyCounter;
+	}
+
+	public float getTime () {
+		return time;
+	}
+
+	public float getDeltaTime () {
+		return deltaTime;
+	}
+
+	public bool getPaused () {
+		return paused;
+	}
+
+	public void togglePause () {
+		paused = !paused;
 	}
 
 }

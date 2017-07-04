@@ -8,7 +8,7 @@ public class SwipeKey : KeySuperClass
 	private bool isSwiped = false;
 	private bool beingSwiped = false;
 
-	void Update ()
+	void FixedUpdate ()
 	{
 		if (isSwiped) {
 			if (!beingSwiped) {
@@ -21,10 +21,16 @@ public class SwipeKey : KeySuperClass
 				float offSet = Mathf.Abs (angle - rotation);
 				if (offSet < 22.5 || offSet > 337.5) {
 					Destroy (gameObject);
-					Debug.Log ("Perfect");
+					if (perfect) {
+						ScoreController.getInstance ().addPerfectScore ();
+						Debug.Log ("Perfect");
+					} else {
+						ScoreController.getInstance ().addGoodScore ();
+						Debug.Log ("Good");
+					}
 				} else {
 					Destroy (gameObject);
-					Debug.Log ("Miss swipe");
+					Debug.Log ("Miss");
 				}
 			}
 		}

@@ -8,7 +8,7 @@ public abstract class goodZone : judgingZones
 
 	override protected void OnTriggerStay (Collider collider) {
 		if (!parentKey.good) {
-			if (Time.time > parentKey.spawnTime - 0.1) { 
+			if (GameController.getInstance ().getTime () > parentKey.spawnTime - 0.1) { 
 				if (collider.transform.tag == "Arrow") {
 					parentKey.good = true;
 				}
