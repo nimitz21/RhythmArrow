@@ -5,7 +5,7 @@
 	<Arrows>
 		<Arrow>
 			<SpawnTime>1</SpawnTime>
-			<VelocityScale>3</VelocityScale>
+			<SpeedScale>3</SpeedScale>
 			<Nodes>
 				<Node>
 					<Position>
@@ -56,7 +56,7 @@
 		</Arrow>		
 		<Arrow>
 			<SpawnTime>3</SpawnTime>
-			<VelocityScale>3</VelocityScale>
+			<SpeedScale>3</SpeedScale>
 			<Nodes>
 				<Node>
 					<Position>
@@ -115,7 +115,7 @@
 		</Arrow>
 		<Arrow>
 			<SpawnTime>6.5</SpawnTime>
-			<VelocityScale>3</VelocityScale>
+			<SpeedScale>3</SpeedScale>
 			<Nodes>
 				<Node>
 					<Position>

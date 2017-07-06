@@ -6,7 +6,7 @@ public class Arrow
 {
 	public float SpawnTime;
 
-	public float VelocityScale;
+	public float SpeedScale;
 
 	[XmlArray("Nodes")]
 	[XmlArrayItem("Node")]

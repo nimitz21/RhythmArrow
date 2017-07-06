@@ -17,13 +17,13 @@ public class HoldKey : KeySuperClass
 		ownerArrowController = ownerArrow.GetComponent <ArrowController> ();
 		lineRenderer = transform.GetComponent <LnRenderer> ();
 		beingHeldLineRenderer = transform.GetChild (2).GetComponent <LnRenderer> ();
-		availableGuideLineLength = ownerArrowController.velocity * GameController.getInstance ().getDeltaTime ();
+		availableGuideLineLength = ownerArrowController.speed * GameController.getInstance ().getDeltaTime ();
 	}
 
 	void FixedUpdate () {
 		if (beingHeld) {
 			ScoreController.getInstance ().addHoldScore ();
-			beingHeldLineLength += ownerArrowController.velocity * GameController.getInstance ().getDeltaTime ();
+			beingHeldLineLength += ownerArrowController.speed * GameController.getInstance ().getDeltaTime ();
 			if (beingHeldLineLength > holdLineLength) {
 				Destroy (gameObject);
 				Debug.Log ("Perfect");
@@ -36,7 +36,7 @@ public class HoldKey : KeySuperClass
 				Debug.Log ("Good");
 			}
 		}
-		availableGuideLineLength += ownerArrowController.velocity * GameController.getInstance ().getDeltaTime ();
+		availableGuideLineLength += ownerArrowController.speed * GameController.getInstance ().getDeltaTime ();
 		if (availableGuideLineLength < holdLineLength) {
 			lineRenderer.drawLine (availableGuideLineLength, followingNodes, 2);
 		} else {

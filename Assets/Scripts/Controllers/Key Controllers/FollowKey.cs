@@ -19,7 +19,7 @@ public class FollowKey : KeySuperClass
 		Vector3 positionBeforeSpawnNode = transform.position;
 		float totalDistanceFromParent = 0;
 		float distanceToNextNode = Vector3.Distance (positionBeforeSpawnNode, ownerArrowController.arrow.Nodes [childSpawnNodeCounter].Position.vector3 ());
-		float childSpawnDistance = (childrenSpawnTime [0] - spawnTime) * ownerArrowController.velocity;
+		float childSpawnDistance = (childrenSpawnTime [0] - spawnTime) * ownerArrowController.speed;
 		while (totalDistanceFromParent + distanceToNextNode < childSpawnDistance) {
 			totalDistanceFromParent += distanceToNextNode;
 			positionBeforeSpawnNode = ownerArrowController.arrow.Nodes [childSpawnNodeCounter].Position.vector3 ();
@@ -43,16 +43,16 @@ public class FollowKey : KeySuperClass
 		
 	void Start () {
 		lineRenderer = GetComponent <LnRenderer> ();
-		connectorLineLength = GameController.getInstance ().getDeltaTime () * ownerArrowController.velocity;
+		connectorLineLength = GameController.getInstance ().getDeltaTime () * ownerArrowController.speed;
 	}
 
 	void FixedUpdate ()
 	{
 		if (childrenSpawnTime.Count > 0) {
 			if (!childSpawned) {
-				connectorLineLength += GameController.getInstance ().getDeltaTime () * ownerArrowController.velocity;
+				connectorLineLength += GameController.getInstance ().getDeltaTime () * ownerArrowController.speed;
 				lineRenderer.drawLine (connectorLineLength, ownerArrowController.arrow.nodesToVector3 ().GetRange (parentSpawnNode, ownerArrowController.arrow.Nodes.Count - parentSpawnNode), 2);
-				if (childrenSpawnTime [0] <= GameController.getInstance ().getTime () + GameController.getInstance ().getGuideLineLength () / ownerArrowController.velocity) {
+				if (childrenSpawnTime [0] <= GameController.getInstance ().getTime () + GameController.getInstance ().getGuideLineLength () / ownerArrowController.speed) {
 					spawnChild ();
 				}
 			}

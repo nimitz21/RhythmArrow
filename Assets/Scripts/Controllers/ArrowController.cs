@@ -13,7 +13,7 @@ public class ArrowController : MonoBehaviour {
 	private SpriteRenderer spriteRenderer;
 
 	public Arrow arrow { get; set; }
-	public float velocity { get; set; }
+	public float speed { get; set; }
 
 	private GameObject getTapKeyInstance () { 
 		return Instantiate (GameController.getInstance ().tapKeyPrefab);
@@ -22,7 +22,7 @@ public class ArrowController : MonoBehaviour {
 	private GameObject getHoldKeyInstance (int keySpawnNodeCounter, float keySpawnDistance) {
 		GameObject newKey = Instantiate (GameController.getInstance ().holdKeyPrefab);
 		HoldKey holdKey = newKey.GetComponent <HoldKey> ();
-		holdKey.setHoldLineLength (arrow.Keys [keyCounter].Duration * velocity);
+		holdKey.setHoldLineLength (arrow.Keys [keyCounter].Duration * speed);
 		holdKey.setFollowingNodes (arrow.nodesToVector3 ().GetRange (keySpawnNodeCounter, arrow.Nodes.Count - keySpawnNodeCounter));
 		holdKey.setOwnerArrow (transform);
 		return newKey;
@@ -93,7 +93,7 @@ public class ArrowController : MonoBehaviour {
 		Vector3 positionBeforeSpawnNode = transform.position;
 		float totalDistanceFromArrow = 0;
 		float distanceToNextNode = Vector3.Distance (positionBeforeSpawnNode, arrow.Nodes [keySpawnNodeCounter].Position.vector3 ());
-		float keySpawnDistance = (arrow.Keys [keyCounter].SpawnTime - GameController.getInstance ().getTime ()) * velocity;
+		float keySpawnDistance = (arrow.Keys [keyCounter].SpawnTime - GameController.getInstance ().getTime ()) * speed;
 		while (totalDistanceFromArrow + distanceToNextNode < keySpawnDistance) {
 			totalDistanceFromArrow += distanceToNextNode;
 			positionBeforeSpawnNode = arrow.Nodes [keySpawnNodeCounter].Position.vector3 ();
@@ -106,10 +106,10 @@ public class ArrowController : MonoBehaviour {
 
 	private void spawnKeys () {
 		if (keyCounter < arrow.Keys.Count) {
-			while (keyCounter < arrow.Keys.Count - 1 && arrow.Keys [keyCounter].SpawnTime <= GameController.getInstance ().getTime () + GameController.getInstance ().getGuideLineLength () / velocity) {
+			while (keyCounter < arrow.Keys.Count - 1 && arrow.Keys [keyCounter].SpawnTime <= GameController.getInstance ().getTime () + GameController.getInstance ().getGuideLineLength () / speed) {
 				spawnKey ();
 			}
-			if (arrow.Keys [keyCounter].SpawnTime <= GameController.getInstance ().getTime () + GameController.getInstance ().getGuideLineLength () / velocity) {
+			if (arrow.Keys [keyCounter].SpawnTime <= GameController.getInstance ().getTime () + GameController.getInstance ().getGuideLineLength () / speed) {
 				spawnKey ();
 			}
 		}
@@ -129,13 +129,13 @@ public class ArrowController : MonoBehaviour {
 	void FixedUpdate () {
 		if (!GameController.getInstance ().getPaused ()) {
 			if (drawnGuideLineLength < GameController.getInstance ().getGuideLineLength ()) {
-				drawnGuideLineLength += velocity * GameController.getInstance ().getDeltaTime ();
+				drawnGuideLineLength += speed * GameController.getInstance ().getDeltaTime ();
 				lineRenderer.drawLine (drawnGuideLineLength, arrow.nodesToVector3 ().GetRange (nodeCounter, arrow.Nodes.Count - nodeCounter), 3);
 			} else {
 				if (!spriteRenderer.enabled) {
 					spriteRenderer.enabled = true;
 				}
-				Vector3 nextPosition = transform.position + velocity * (destination - transform.position).normalized * GameController.getInstance ().getDeltaTime ();
+				Vector3 nextPosition = transform.position + speed * (destination - transform.position).normalized * GameController.getInstance ().getDeltaTime ();
 				if (Vector3.Distance (nextPosition, destination) < Vector3.Distance (transform.position, destination)) {
 					transform.position = nextPosition;
 					lineRenderer.drawLine (GameController.getInstance ().getGuideLineLength (), arrow.nodesToVector3 ().GetRange (nodeCounter, arrow.Nodes.Count - nodeCounter), 3);
