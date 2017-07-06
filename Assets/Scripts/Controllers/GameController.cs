@@ -21,12 +21,12 @@ public class GameController : MonoBehaviour {
 	public GameObject swipeKeyPrefab;
 	public GameObject followKeyPrefab;
 
-	private void addArrow (Vector3 position) {
+	private void spawnArrow (Vector3 position) {
 		GameObject newArrow = Instantiate (arrowPrefab);
 		newArrow.transform.position = position;
 		ArrowController newArrowController = newArrow.GetComponent <ArrowController> ();
 		newArrowController.arrow = chart.Arrows [arrowCounter];
-		newArrowController.velocity = chart.Bpm * 3;
+		newArrowController.velocity = chart.Bpm * chart.Arrows [arrowCounter].VelocityScale;
 		arrows.Add (newArrow);
 		++arrowCounter;
 	}
@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour {
 		arrows = new List<GameObject> ();
 		arrowCounter = 0;
 		guideLineLength = 500;
-		time = -0.02f * guideLineLength;
+		time = -guideLineLength / (chart.Arrows [0].VelocityScale * chart.Bpm);
 		paused = false;
 	}
 
@@ -48,11 +48,11 @@ public class GameController : MonoBehaviour {
 			deltaTime = Time.deltaTime;
 			time += deltaTime;
 			if (arrowCounter < chart.Arrows.Count) {
-				while (arrowCounter < chart.Arrows.Count - 1 && time >= chart.Arrows [arrowCounter].SpawnTime) {
-					addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
+				while (arrowCounter < chart.Arrows.Count - 1 && time + guideLineLength / (chart.Arrows [arrowCounter].VelocityScale * chart.Bpm) >= chart.Arrows [arrowCounter].SpawnTime) {
+					spawnArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
 				}
-				if (time >= chart.Arrows [arrowCounter].SpawnTime) {
-					addArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
+				if (time + guideLineLength / (chart.Arrows [arrowCounter].VelocityScale * chart.Bpm) >= chart.Arrows [arrowCounter].SpawnTime) {
+					spawnArrow (chart.Arrows [arrowCounter].Nodes [0].Position.vector3 ());
 				}
 			}
 		} else {

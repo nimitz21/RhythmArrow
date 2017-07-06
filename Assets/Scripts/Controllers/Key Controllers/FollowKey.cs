@@ -12,7 +12,7 @@ public class FollowKey : KeySuperClass
 	private ArrowController ownerArrowController;
 	private int parentSpawnNode;
 	private LnRenderer lineRenderer;
-	private float connectorLineLength = 0;
+	private float connectorLineLength;
 
 	private void spawnChild () {
 		int childSpawnNodeCounter = parentSpawnNode;
@@ -43,6 +43,7 @@ public class FollowKey : KeySuperClass
 		
 	void Start () {
 		lineRenderer = GetComponent <LnRenderer> ();
+		connectorLineLength = GameController.getInstance ().getDeltaTime () * ownerArrowController.velocity;
 	}
 
 	void FixedUpdate ()

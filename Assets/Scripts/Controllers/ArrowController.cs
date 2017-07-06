@@ -9,6 +9,8 @@ public class ArrowController : MonoBehaviour {
 	private LnRenderer lineRenderer;
 	private int keyCounter;
 	private int traveledNode;
+	private float drawnGuideLineLength;
+	private SpriteRenderer spriteRenderer;
 
 	public Arrow arrow { get; set; }
 	public float velocity { get; set; }
@@ -119,22 +121,33 @@ public class ArrowController : MonoBehaviour {
 		lineRenderer = gameObject.GetComponent <LnRenderer> ();
 		keyCounter = 0;
 		traveledNode = 1;
+		drawnGuideLineLength = 0;
+		spriteRenderer = gameObject.GetComponent <SpriteRenderer> ();
+		spriteRenderer.enabled = false;
 	}
 
 	void FixedUpdate () {
 		if (!GameController.getInstance ().getPaused ()) {
-			Vector3 nextPosition = transform.position + velocity * (destination - transform.position).normalized * GameController.getInstance ().getDeltaTime ();
-			if (Vector3.Distance (nextPosition, destination) < Vector3.Distance (transform.position, destination)) {
-				transform.position = nextPosition;
-				lineRenderer.drawLine (GameController.getInstance ().getGuideLineLength (), arrow.nodesToVector3 ().GetRange (nodeCounter, arrow.Nodes.Count - nodeCounter), 3);
-				spawnKeys ();
+			if (drawnGuideLineLength < GameController.getInstance ().getGuideLineLength ()) {
+				drawnGuideLineLength += velocity * GameController.getInstance ().getDeltaTime ();
+				lineRenderer.drawLine (drawnGuideLineLength, arrow.nodesToVector3 ().GetRange (nodeCounter, arrow.Nodes.Count - nodeCounter), 3);
 			} else {
-				++nodeCounter;
-				++traveledNode;
-				if (nodeCounter < arrow.Nodes.Count) {
-					setDestination (arrow.Nodes [nodeCounter].Position.vector3 ());
+				if (!spriteRenderer.enabled) {
+					spriteRenderer.enabled = true;
+				}
+				Vector3 nextPosition = transform.position + velocity * (destination - transform.position).normalized * GameController.getInstance ().getDeltaTime ();
+				if (Vector3.Distance (nextPosition, destination) < Vector3.Distance (transform.position, destination)) {
+					transform.position = nextPosition;
+					lineRenderer.drawLine (GameController.getInstance ().getGuideLineLength (), arrow.nodesToVector3 ().GetRange (nodeCounter, arrow.Nodes.Count - nodeCounter), 3);
+					spawnKeys ();
 				} else {
-					gameObject.SetActive (false);
+					++nodeCounter;
+					++traveledNode;
+					if (nodeCounter < arrow.Nodes.Count) {
+						setDestination (arrow.Nodes [nodeCounter].Position.vector3 ());
+					} else {
+						gameObject.SetActive (false);
+					}
 				}
 			}
 		}

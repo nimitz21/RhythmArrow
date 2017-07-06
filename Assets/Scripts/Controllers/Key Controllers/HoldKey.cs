@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class HoldKey : KeySuperClass
 {
 	private bool beingHeld = false;
-	private float availableGuideLineLength = 0;
+	private float availableGuideLineLength;
 	private float holdLineLength;
 	private List<Vector3> followingNodes;
 	private Transform ownerArrow;
@@ -17,6 +17,7 @@ public class HoldKey : KeySuperClass
 		ownerArrowController = ownerArrow.GetComponent <ArrowController> ();
 		lineRenderer = transform.GetComponent <LnRenderer> ();
 		beingHeldLineRenderer = transform.GetChild (2).GetComponent <LnRenderer> ();
+		availableGuideLineLength = ownerArrowController.velocity * GameController.getInstance ().getDeltaTime ();
 	}
 
 	void FixedUpdate () {
