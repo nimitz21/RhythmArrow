@@ -2,6 +2,7 @@
 <Chart>
 	<Title>Test</Title>
 	<Bpm>160</Bpm>
+	<Length>10</Length>
 	<Arrows>
 		<Arrow>
 			<SpawnTime>1</SpawnTime>

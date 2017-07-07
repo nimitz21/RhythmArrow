@@ -10,6 +10,8 @@ public class Chart
 
 	public float Bpm;
 
+	public float Length;
+
 	[XmlArray("Arrows")]
 	[XmlArrayItem("Arrow")]
 	public List<Arrow> Arrows = new List <Arrow> ();
